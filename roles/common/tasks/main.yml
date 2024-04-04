@@ -1,0 +1,13 @@
+- name: Set timezone to Asia/Tokyo
+  community.general.timezone:
+    name: Asia/Jakarta
+
+- name: Include tasks for Debian based OS
+  ansible.builtin.include_tasks:
+    file: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Include tasks for RedHat based OS
+  ansible.builtin.include_tasks:
+    file: redhat.yml
+  when: ansible_os_family == "RedHat"

@@ -1,0 +1,6 @@
+- hosts: linux
+  become: true
+  become_method: sudo
+  tasks:
+    - name: Test ping connection
+      ansible.builtin.ping:

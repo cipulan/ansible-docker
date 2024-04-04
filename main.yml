@@ -1,0 +1,12 @@
+---
+- name: Docker Installation
+  hosts: linux
+  become: true
+  become_method: sudo
+  gather_facts: yes
+  roles:
+    - { role: pre-tasks, tags: [pre-task] }
+    - { role: common, tags: [jq], when: common == 'true' }
+    - { role: repository, tags: [bash], when: repository == 'true' }
+    - { role: docker, tags: [service], when: docker == 'true' }
+    - { role: post-install, tags: [service], when: post_install == 'true' }

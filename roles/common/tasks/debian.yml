@@ -1,0 +1,39 @@
+- name: Set precedence in /etc/gai.conf
+  lineinfile:
+    path: /etc/gai.conf
+    regexp: '^#precedence ::ffff:0:0\/96  100'
+    line: 'precedence ::ffff:0:0\/96  100'
+
+- name: Modify restart configuration
+  lineinfile:
+    path: /etc/needrestart/needrestart.conf
+    regexp: '^#\$nrconf{restart} = ''i'';'
+    line: "$nrconf{restart} = 'a';"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Update package lists
+  apt:
+    update_cache: yes
+
+- name: Remove Docker-related packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - docker.io
+    - docker-doc
+    - docker-compose
+    - docker-compose-v2
+    - podman-docker
+    - containerd
+    - runc
+
+- name: Install required packages
+  apt:
+    name:
+      - ca-certificates
+      - curl
+      - zip
+      - unzip
+      - wget
+    state: present
